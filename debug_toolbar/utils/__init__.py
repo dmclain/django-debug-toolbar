@@ -136,6 +136,9 @@ def getframeinfo(frame, context=1):
     if inspect.istraceback(frame):
         lineno = frame.tb_lineno
         frame = frame.tb_frame
+    elif '__jinja_template__' in frame.f_globals:
+        template = frame.f_globals.get('__jinja_template__')
+        lineno = template.get_corresponding_lineno(frame.f_lineno)
     else:
         lineno = frame.f_lineno
     if not inspect.isframe(frame):
